@@ -39,7 +39,7 @@ The following **additional** features are implemented:
 ## Video Walkthrough (GIF)
 
 If you recorded multiple GIFs for all the implemented features, you can add them here:
-![](gif1-link-here)
+![](https://github.com/AutonomousDev/MemoryGame/blob/main/2022-03-22%2014-16-44_2.gif?raw=true)
 ![](gif2-link-here)
 ![](gif3-link-here)
 ![](gif4-link-here)
