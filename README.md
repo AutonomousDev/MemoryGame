@@ -75,7 +75,7 @@ I would also try to add an endless mode where the game goes on forever. Next I w
 
 ## License
 
-    Copyright [YOUR NAME]
+    Copyright Cameron Bowers
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
