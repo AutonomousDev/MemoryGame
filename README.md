@@ -70,7 +70,7 @@ I would also try to add an endless mode where the game goes on forever. Next I w
 
 ## Interview Recording URL Link
 
-[My 5-minute Interview Recording](your-link-here)
+[My 5-minute Interview Recording](https://youtu.be/rWlos-smtaA)
 
 
 ## License
