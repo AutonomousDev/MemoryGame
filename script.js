@@ -2,7 +2,7 @@
     to your site with Javascript */
 
 // global constants
-const clueHoldTime = 1000; //how long to hold each clue's light/sound
+let clueHoldTime = 1000; //how long to hold each clue's light/sound
 const cluePauseTime = 333; //how long to pause in between clues
 const nextClueWaitTime = 1000; //how long to wait before starting playback of the clue sequence
 
@@ -14,14 +14,49 @@ var gamePlaying = false;
 var tonePlaying = false;
 var volume = 0.5;  //must be between 0.0 and 1.0
 var guessCounter = 0;
+var buttonCount = 10;
+var mistakeCount = 0;
+
+function addMistake(){
+  mistakeCount++
+  document.getElementById("mistake-count").innerHTML = mistakeCount;
+}
+
+function updateButtonCount(i){
+  buttonCount = i
+  console.log(buttonCount)
+  for(let i=1;i<=10;i++){ 
+    console.log("button"+i);
+    if (i<=buttonCount){
+      document.getElementById("button"+i).classList.remove("hidden");
+    }
+    else{
+      document.getElementById("button"+i).classList.add("hidden");
+    }  
+  }  
+  randomPattern();
+}
+function randomPattern(){
+  // randomize the patern each new game
+  for(let i=0;i<=8;i++){
+    pattern[i] = Math.floor(Math.random() * buttonCount) + 1;
+  }
+  console.log("New patern is: "+ pattern)
+}
 
 function startGame(){
   //initialize game variables
+  randomPattern();
+  clueHoldTime = 1000;    // Reset playback time for new game
+  mistakeCount = 0;      // Reset Mistake count
+  document.getElementById("myMistakes").classList.remove("hidden");
+  document.getElementById("mistake-count").innerHTML = mistakeCount;
   progress = 0;
   gamePlaying = true;
   // swap the Start and Stop buttons
   document.getElementById("startBtn").classList.add("hidden");
   document.getElementById("stopBtn").classList.remove("hidden");
+  document.getElementById("btn-count").classList.add("hidden");
   playClueSequence()
 }
 function stopGame(){
@@ -31,14 +66,23 @@ function stopGame(){
   // swap the Start and Stop buttons
   document.getElementById("startBtn").classList.remove("hidden");
   document.getElementById("stopBtn").classList.add("hidden");
+  document.getElementById("btn-count").classList.remove("hidden");
+  document.getElementById("myMistakes").classList.add("hidden");
 }
 
 // Sound Synthesis Functions
 const freqMap = {
-  1: 261.6,
-  2: 329.6,
-  3: 392,
-  4: 466.2
+  1: 100,
+  2: 200,
+  3: 300,
+  4: 400,
+  5: 500,
+  6: 600,
+  7: 700,
+  8: 800,
+  9: 900,
+  10: 1000
+
 }
 function playTone(btn,len){ 
   o.frequency.value = freqMap[btn]
@@ -89,14 +133,17 @@ function playSingleClue(btn){
   }
 }
 function playClueSequence(){
+  clueHoldTime -= (progress*20) // Playback speeds up each turn
   guessCounter = 0;
   context.resume()
   let delay = nextClueWaitTime; //set delay to initial wait time
+  
   for(let i=0;i<=progress;i++){ // for each clue that is revealed so far
     console.log("play single clue: " + pattern[i] + " in " + delay + "ms")
     setTimeout(playSingleClue,delay,pattern[i]) // set a timeout to play that clue
-    delay += clueHoldTime 
+    delay += clueHoldTime
     delay += cluePauseTime;
+    
   }
 }
 
@@ -129,7 +176,13 @@ function guess(btn){
     }
   }
   else{
-    loseGame();
+    if (mistakeCount<3){
+      addMistake()
+    }
+    else{
+      loseGame();
+    }
+    
   }
   // add game logic here
 }
